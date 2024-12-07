@@ -48,10 +48,10 @@ export default function Home() {
        * Hauptüberschrift und Untertitel der Website
        */}
       <div className="max-w-4xl w-full space-y-8 text-center">
-        <h1 className="text-4xl sm:text-6xl font-bold text-slate-900 dark:text-white">
+        <h1 className="text-4xl sm:text-6xl font-bold animate-fade-in bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-clip-text text-transparent bg-size-200 animate-gradient">
           Xcruser.net
         </h1>
-        <p className="text-xl text-slate-700 dark:text-slate-300">
+        <p className="text-xl text-slate-700 dark:text-slate-300 animate-fade-in-delayed">
           Willkommen in meinem digitalen Homelab
         </p>
       </div>
