@@ -31,6 +31,21 @@
 
 ## 🔄 Recent Updates
 
+### 📊 Status Page (December 2024)
+
+#### ✨ Features
+- **System Status Monitoring**
+  - 🔄 Echtzeit-Überwachung der Website-Verfügbarkeit
+  - ⚡ Performance-Metriken und Ladezeiten
+  - 🕒 Uptime-Tracking und Systemzustand
+  - 🌓 Dark/Light Mode Support
+
+#### 🛠️ Technische Details
+- Implementierung mit Next.js API Routes
+- Automatische Aktualisierung alle 30 Sekunden
+- Performance-Tracking für alle wichtigen Seiten
+- Responsive Design für alle Geräte
+
 ### 🎨 Custom 404 Page (December 2024)
 
 #### ✨ Features

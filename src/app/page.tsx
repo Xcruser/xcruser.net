@@ -8,6 +8,10 @@
  * - Feature-Karten, die die verschiedenen Bereiche der Website präsentieren
  */
 
+'use client';
+
+import Image from "next/image";
+
 // Typ-Definition für die CSS-Variablen der Blob-Elemente
 interface BlobStyle extends React.CSSProperties {
   '--color-start': string;
