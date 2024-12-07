@@ -94,6 +94,64 @@
     animation: blob-bounce 8s infinite ease;
     background-image: radial-gradient(circle, var(--color-start), var(--color-end));
   }
+
+  /* Navigation Animations */
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  .nav-item:hover::after {
+    width: 100%;
+  }
+
+  .nav-item.active::after {
+    width: 100%;
+    background: var(--primary);
+  }
+
+  /* Dropdown Animation */
+  .dropdown-enter {
+    animation: slideDown 0.2s ease forwards;
+  }
+
+  /* Search Animation */
+  .search-results {
+    animation: scaleUp 0.2s ease forwards;
+  }
+
+  /* Mobile Menu Animation */
+  .mobile-menu-enter {
+    animation: slideDown 0.3s ease forwards;
+  }
+
+  /* Glassmorphism effect */
+  .glass-effect {
+    backdrop-filter: blur(12px);
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Hover effect for cards */
+  .hover-card {
+    transition: all 0.3s ease;
+  }
+
+  .hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
 }
 
 /* 
@@ -126,4 +184,37 @@
 /* Utility-Klasse für schwebende Animation */
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+/* Füge die neuen Animationen zu den bestehenden Styles hinzu */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

@@ -1,33 +1,110 @@
-# xcruser.net
+# Xcruser.net 🚀
 
-Webseite für Homelab Services, gebaut mit Next.js und TailwindCSS.
+[![Next.js](https://img.shields.io/badge/Next.js-13.0-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.0-ff69b4?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-## Tech Stack
+> 🌟 Modern, performant, and beautiful personal website built with Next.js and TypeScript
 
-- [Next.js](https://nextjs.org/) - React framework for production
-- [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [TypeScript](https://www.typescriptlang.org/) - JavaScript with syntax for types
+<div align="center">
+  <img src="public/preview.png" alt="Xcruser.net Preview" width="100%" />
+</div>
 
-## Development
+## ✨ Features
+
+- 🎨 **Modern Design** - Clean and minimalist interface
+- 🚀 **Performance** - Optimized for speed and SEO
+- 🔍 **Smart Search** - Fuzzy search with keyboard shortcuts
+- 📱 **Responsive** - Perfect on all devices
+- 🎭 **Animations** - Smooth transitions and effects
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 13 with App Router
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Animation:** Framer Motion
+- **Search:** Fuse.js
+- **Deployment:** Vercel
+
+## 🔄 Recent Updates
+
+### 🎨 Navigation & Search Enhancements (December 2024)
+
+#### 🎯 Navigation Bar
+- **Logo Design** 
+  ```css
+  background: gradient(blue-200 → blue-400)
+  animation: hover-scale(1.05)
+  ```
+  - ✨ Subtle gradient effect
+  - 🎨 Minimalist typography
+  - 🌊 Smooth hover animations
+
+#### 🔍 Search Experience
+- **Modern Interface**
+  ```jsx
+  <SearchBar
+    shortcut="Ctrl+K"
+    animation="slide-fade"
+    backdrop="blur"
+  />
+  ```
+  - ⌨️ Keyboard shortcuts (Ctrl+K)
+  - 🔄 Real-time fuzzy search
+  - ✨ Smooth transitions
+
+#### 📱 Responsive Design
+- **Adaptive Layout**
+  ```css
+  @media (max-width: 768px) {
+    /* Mobile optimizations */
+  }
+  ```
+  - 📱 Mobile-first approach
+  - 🖥️ Desktop enhancements
+  - 📊 Flexible grid system
+
+## 🚀 Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/xcruser.net.git
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run development server**
+   ```bash
+   npm run dev
+   ```
+
+## 📁 Project Structure
 
 ```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
+xcruser.net/
+├── src/
+│   ├── app/          # App router and pages
+│   ├── components/   # Reusable components
+│   └── styles/       # Global styles
+└── public/          # Static assets
 ```
 
-## Project Structure
+## 🤝 Contributing
 
-```
-src/
-├── app/          # App router and pages
-├── components/   # Reusable components
-└── styles/       # Global styles
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ by Kevin</sub>
+</div>
