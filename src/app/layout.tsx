@@ -4,28 +4,30 @@ import "./globals.css";
 import { Navigation } from "@/components/Navigation/Navigation";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { clsx } from "clsx";
+import { Providers } from '@/components/Providers'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Xcruser.net - Homelab & Projekte",
   description: "Ein digitales Homelab mit verschiedenen Diensten und Projekten",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="de" suppressHydrationWarning>
       <body
@@ -42,10 +44,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="flex min-h-screen flex-col">
-            <Navigation />
-            <main className="flex-1 pt-16">
-              {children}
-            </main>
+            <Providers>
+              <Navigation />
+              <main className="flex-1 pt-16">
+                {children}
+              </main>
+            </Providers>
           </div>
         </ThemeProvider>
       </body>

@@ -1,13 +1,9 @@
 import { NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-
-const docsDirectory = path.join(process.cwd(), 'content/docs')
+import clientPromise from '@/lib/mongodb'
 
 interface Doc {
-  slug: string
   title: string
+  slug: string
   content: string
   category: string
   description?: string
@@ -27,51 +23,71 @@ interface DocsData {
 }
 
 export async function GET() {
-  // Ensure the docs directory exists
-  if (!fs.existsSync(docsDirectory)) {
-    fs.mkdirSync(docsDirectory, { recursive: true })
-  }
+  try {
+    const client = await clientPromise
+    const db = client.db("xcruser")
+    const collection = db.collection('documents')
 
-  const categories = fs.readdirSync(docsDirectory)
-    .filter(file => fs.statSync(path.join(docsDirectory, file)).isDirectory())
-
-  const docsData: DocsData = {
-    categories: [],
-    allDocs: []
-  }
-
-  for (const category of categories) {
-    const categoryPath = path.join(docsDirectory, category)
-    const categoryInfo = JSON.parse(
-      fs.readFileSync(path.join(categoryPath, 'category.json'), 'utf8')
-    )
-
-    const docs = fs.readdirSync(categoryPath)
-      .filter(file => file.endsWith('.md'))
-      .map((file): Doc => {
-        const fullPath = path.join(categoryPath, file)
-        const fileContents = fs.readFileSync(fullPath, 'utf8')
-        const { data, content } = matter(fileContents)
-        
-        return {
-          slug: file.replace(/\.md$/, ''),
-          title: data.title,
-          content,
-          category,
-          description: data.description,
-          tags: data.tags
-        }
-      })
+    // Hole alle Dokumente
+    const documents = await collection.find({}).toArray()
     
-    docsData.categories.push({
-      slug: category,
-      title: categoryInfo.title,
-      description: categoryInfo.description,
-      docs
+    console.log('Gefundene Dokumente:', documents) // Debug-Ausgabe
+
+    if (!documents || documents.length === 0) {
+      return NextResponse.json({
+        categories: [],
+        allDocs: []
+      })
+    }
+
+    // Gruppiere Dokumente nach Kategorien
+    const categoriesMap = new Map<string, Doc[]>()
+    documents.forEach(doc => {
+      const category = doc.category || 'Allgemein' // Fallback-Kategorie
+      if (!categoriesMap.has(category)) {
+        categoriesMap.set(category, [])
+      }
+      
+      const docData = {
+        title: doc.title,
+        slug: doc.slug,
+        content: doc.content,
+        category: category,
+        description: doc.description,
+        tags: doc.tags
+      }
+      
+      categoriesMap.get(category)!.push(docData)
     })
 
-    docsData.allDocs.push(...docs)
-  }
+    // Formatiere die Daten für die Antwort
+    const categories = Array.from(categoriesMap.entries()).map(([category, docs]) => ({
+      slug: category.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      title: category,
+      description: `Dokumente in der Kategorie ${category}`,
+      docs
+    }))
 
-  return NextResponse.json(docsData)
+    console.log('Kategorien:', categories) // Debug-Ausgabe
+
+    const docsData: DocsData = {
+      categories,
+      allDocs: documents.map(doc => ({
+        title: doc.title,
+        slug: doc.slug,
+        content: doc.content,
+        category: doc.category || 'Allgemein',
+        description: doc.description,
+        tags: doc.tags
+      }))
+    }
+
+    return NextResponse.json(docsData)
+  } catch (error) {
+    console.error('Error fetching documents:', error)
+    return NextResponse.json(
+      { error: 'Fehler beim Laden der Dokumente' },
+      { status: 500 }
+    )
+  }
 }

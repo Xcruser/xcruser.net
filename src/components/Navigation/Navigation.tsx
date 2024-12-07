@@ -17,6 +17,7 @@ import { usePathname } from 'next/navigation'
 import { Search } from '../Search/Search'
 import { ThemeToggle } from '../ThemeToggle'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useSession, signOut } from 'next-auth/react'
 
 const navItems = [
   { path: '/', label: 'Home' },
@@ -28,6 +29,7 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [hoveredPath, setHoveredPath] = useState<string | null>(null)
   const pathname = usePathname()
+  const { data: session, status } = useSession()
   
   useEffect(() => {
     setIsOpen(false)
@@ -94,6 +96,35 @@ export function Navigation() {
               <Search />
             </div>
             <ThemeToggle />
+            
+            {/* Login/Logout Button */}
+            <div className="hidden md:block">
+              {status === 'loading' ? (
+                <div className="h-8 w-8 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
+              ) : session ? (
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm text-slate-600 dark:text-slate-300">
+                    {session.user?.name || session.user?.email}
+                  </span>
+                  <button
+                    onClick={() => signOut()}
+                    className="px-3 py-1.5 text-xs font-medium tracking-wide uppercase transition-colors
+                             text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-300"
+                  >
+                    Abmelden
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/auth/login"
+                  className="px-3 py-1.5 text-xs font-medium tracking-wide uppercase transition-colors
+                           text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-300"
+                >
+                  Anmelden
+                </Link>
+              )}
+            </div>
+
             {/* Mobile Menu Button */}
             <motion.button
               whileTap={{ scale: 0.95 }}
@@ -175,6 +206,36 @@ export function Navigation() {
                   ))}
                   <div className="pt-2 pb-1">
                     <Search />
+                  </div>
+                  
+                  {/* Mobile Login/Logout */}
+                  <div className="px-4 py-2">
+                    {status === 'loading' ? (
+                      <div className="h-8 w-8 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
+                    ) : session ? (
+                      <div className="space-y-2">
+                        <span className="block text-sm text-slate-600 dark:text-slate-300">
+                          {session.user?.name || session.user?.email}
+                        </span>
+                        <button
+                          onClick={() => signOut()}
+                          className="block w-full px-3 py-1.5 text-xs font-medium tracking-wide uppercase transition-colors
+                                   text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-300
+                                   hover:bg-slate-200/30 dark:hover:bg-white/2"
+                        >
+                          Abmelden
+                        </button>
+                      </div>
+                    ) : (
+                      <Link
+                        href="/auth/login"
+                        className="block w-full px-3 py-1.5 text-xs font-medium tracking-wide uppercase transition-colors
+                                 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-300
+                                 hover:bg-slate-200/30 dark:hover:bg-white/2"
+                      >
+                        Anmelden
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>

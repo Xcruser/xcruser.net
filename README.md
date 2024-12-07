@@ -1,89 +1,106 @@
-# Xcruser.net 
+# XCRUser.net
 
-Meine persönliche Website und Wissensdatenbank, entwickelt mit Next.js, TypeScript und Tailwind CSS.
+Eine moderne Webplattform für Dokumentation, Projekte und Wissensverwaltung, entwickelt mit Next.js 14, TypeScript und Tailwind CSS.
 
 ## Features
 
-### Globale Suche
-- **Echtzeit-Suche**: Sofortige Suchergebnisse während der Eingabe
-- **Umfassende Suche**: Durchsucht sowohl Seiten als auch Dokumentation
-- **Intelligente Suche**: 
-  - Unterstützt Teilwort-Suche
-  - Multi-Wort-Suche (alle Suchbegriffe müssen vorkommen)
-  - Sucht in Titeln, Beschreibungen, Inhalten und Tags
-- **Performance-Optimiert**: 
-  - Client-seitige Suche für schnelle Ergebnisse
-  - Debounced Input für optimale Performance
-  - Vorgeladene Suchdaten
-- **Dark Mode Support**: Vollständig angepasstes Design für helles und dunkles Theme
+- **Dokumentation & Wiki**
+  - Markdown-basierte Dokumentation
+  - Kategorisierung und Tagging
+  - Versionierung von Dokumenten
 
-### Dokumentation
-- **Wiki-ähnliche Struktur**: Kategorisierte Dokumentation
-- **Markdown Support**: Volle Unterstützung für Markdown-Formatierung
-- **Metadaten**: Unterstützung für Titel, Beschreibungen und Tags
-- **Dynamisches Routing**: Automatische URL-Generierung basierend auf der Dokumentstruktur
+- **Projektverwaltung**
+  - GitHub-Integration
+  - Projektübersicht und Details
+  - Status-Tracking
+
+- **Benutzerverwaltung**
+  - Sichere Authentifizierung mit NextAuth.js
+  - Benutzerprofile und -verwaltung
+  - Rollenbasierte Zugriffskontrolle
+
+- **Moderne UI**
+  - Responsive Design
+  - Dark/Light Mode
+  - Barrierefreie Komponenten
 
 ## Technologie-Stack
 
-- **Frontend**:
-  - Next.js 14
+- **Frontend**
+  - Next.js 14 (App Router)
   - TypeScript
   - Tailwind CSS
-  - Heroicons v2
+  - Shadcn/ui Komponenten
+  - Framer Motion für Animationen
 
-- **Features**:
-  - Server Components
-  - API Routes
-  - Dynamic Routing
-  - Client-side Search
-  - Dark Mode
+- **Backend**
+  - Next.js API Routes
+  - MongoDB mit Mongoose
+  - NextAuth.js für Authentifizierung
+
+## Installation
+
+1. **Repository klonen**
+   ```bash
+   git clone https://github.com/yourusername/xcruser.net.git
+   cd xcruser.net
+   ```
+
+2. **Abhängigkeiten installieren**
+   ```bash
+   npm install
+   ```
+
+3. **Umgebungsvariablen konfigurieren**
+   ```bash
+   # .env.local erstellen
+   cp .env.example .env.local
+   # Dann die Werte in .env.local anpassen
+   ```
+
+4. **Entwicklungsserver starten**
+   ```bash
+   npm run dev
+   ```
+
+## Umgebungsvariablen
+
+```env
+# MongoDB
+MONGODB_URI=mongodb://localhost:27017/xcruser
+
+# NextAuth.js
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-key
+
+# GitHub (Optional)
+GITHUB_ID=your-github-client-id
+GITHUB_SECRET=your-github-client-secret
+```
 
 ## Projektstruktur
 
 ```
-xcruser.net/
-├── content/
-│   └── docs/           # Markdown-Dokumentation
-├── src/
-│   ├── app/           # Next.js App Router
-│   ├── components/    # React Komponenten
-│   └── utils/         # Hilfsfunktionen
+src/
+├── app/                    # Next.js App Router
+│   ├── admin/             # Admin-Bereich
+│   ├── api/               # API Routes
+│   ├── auth/              # Authentifizierung
+│   ├── docs/              # Dokumentation
+│   └── projects/          # Projektverwaltung
+├── components/            # React Komponenten
+├── lib/                   # Hilfsfunktionen
+├── models/               # Mongoose Models
+├── providers/            # React Context Provider
+└── styles/              # Globale Styles
 ```
 
 ## Entwicklung
 
-1. Repository klonen:
-```bash
-git clone https://github.com/yourusername/xcruser.net.git
-```
-
-2. Abhängigkeiten installieren:
-```bash
-npm install
-```
-
-3. Entwicklungsserver starten:
-```bash
-npm run dev
-```
-
-4. Browser öffnen und http://localhost:3000 aufrufen
-
-## Dokumentation hinzufügen
-
-1. Erstelle einen neuen Ordner in `content/docs/[kategorie]/`
-2. Füge eine `category.json` mit Titel und Beschreibung hinzu
-3. Erstelle Markdown-Dateien mit Front Matter:
-```markdown
----
-title: Dokumenttitel
-description: Kurze Beschreibung
-tags: [tag1, tag2]
----
-
-Inhalt der Dokumentation...
-```
+- **Code-Stil**: Das Projekt verwendet ESLint und Prettier für konsistente Formatierung
+- **Commits**: Bitte folgen Sie den [Conventional Commits](https://www.conventionalcommits.org/)
+- **Tests**: Führen Sie Tests mit `npm test` aus
 
 ## Lizenz
 
-MIT
+MIT 
