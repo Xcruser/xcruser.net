@@ -1,21 +1,129 @@
+/* 
+ * Tailwind CSS Imports
+ * Diese Zeilen importieren die Basis-Styles, Komponenten und Utilities von Tailwind
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* 
+ * Globale Farbvariablen
+ * Definition der Hauptfarben für konsistentes Theming durch die gesamte Anwendung
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #2563eb;    /* Blau - Hauptfarbe für wichtige Elemente */
+  --secondary: #10b981;  /* Smaragdgrün - für Akzente und Hervorhebungen */
+  --accent: #8b5cf6;     /* Violett - für besondere Highlights */
+  --background: #0f172a; /* Dunkles Blau - Hintergrundfarbe */
+  --foreground: #f8fafc; /* Helles Grau - Textfarbe */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 
+ * Basis-Styles
+ * Grundlegende Stilregeln für den Body-Element
+ */
+@layer base {
+  body {
+    @apply bg-slate-900 text-slate-50 relative overflow-hidden;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* 
+ * Komponenten-Styles
+ * Wiederverwendbare Klassen für häufig genutzte UI-Elemente
+ */
+@layer components {
+  /* 
+   * Tech Card
+   * Gestaltung der Karten mit Glasmorphismus-Effekt und Hover-Animationen
+   */
+  .tech-card {
+    @apply relative overflow-hidden rounded-xl bg-slate-800/50 p-6 backdrop-blur-sm
+           border border-slate-700/50 transition-all duration-300
+           hover:border-slate-600/50 hover:shadow-lg hover:shadow-slate-700/20;
+  }
+
+  /* 
+   * Tech Button
+   * Gestaltung der Buttons mit Gradient und Hover-Effekten
+   */
+  .tech-button {
+    @apply px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-accent
+           text-white font-medium transition-all duration-300
+           hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5;
+  }
+
+  /* 
+   * Glowing Text
+   * Texteffekt mit Farbverlauf für Überschriften
+   */
+  .glow-text {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+  }
+
+  /* 
+   * Animierter Hintergrund
+   * Bewegter Gradient-Hintergrund ähnlich der Tailwind CSS Website
+   */
+  .animated-background {
+    @apply absolute inset-0 -z-10 h-full w-full;
+    background: linear-gradient(to bottom right,transparent 40%,rgba(37, 99, 235, 0.1),rgba(139, 92, 246, 0.1));
+    background-size: 200% 200%;
+    animation: moveGradient 10s ease infinite;
+  }
+
+  /* 
+   * Hintergrund-Gitter
+   * Subtiles Gittermuster mit Fade-out an den Rändern
+   */
+  .background-grid {
+    @apply absolute inset-0 -z-10;
+    background-size: 100px 100px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+  }
+
+  /* 
+   * Leuchtende Blob-Elemente
+   * Animierte, weiche Formen im Hintergrund
+   */
+  .glow-blob {
+    @apply absolute blur-3xl opacity-30 mix-blend-soft-light;
+    animation: blob-bounce 8s infinite ease;
+    background-image: radial-gradient(circle, var(--color-start), var(--color-end));
+  }
+}
+
+/* 
+ * Animationen
+ * Definitionen aller benutzerdefinierten Animationen
+ */
+
+/* Schwebende Animation für Elemente */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Bewegung des Hintergrund-Gradienten */
+@keyframes moveGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Bewegung der Blob-Elemente */
+@keyframes blob-bounce {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(25px, -25px) scale(1.05); }
+  50% { transform: translate(0, -50px) scale(1); }
+  75% { transform: translate(-25px, -25px) scale(0.95); }
+}
+
+/* Utility-Klasse für schwebende Animation */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
