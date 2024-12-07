@@ -31,6 +31,20 @@
 
 ## 🔄 Recent Updates
 
+### 🎨 Custom 404 Page (December 2024)
+
+#### ✨ Features
+- **Animierte 404-Seite**
+  - 🎭 Interaktives animiertes SVG-Gesicht
+  - 🌈 Farblich angepasstes Error-Design
+  - 💫 Smooth Animations mit Framer Motion
+
+#### 🎯 Technische Details
+- Implementierung mit `framer-motion`
+- Responsive Design für alle Bildschirmgrößen
+- Dark/Light Mode Unterstützung
+- Custom SVG Animationen
+
 ### 💡 Light Mode Improvements (December 2024)
 
 #### 🎨 Design & Readability
