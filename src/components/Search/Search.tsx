@@ -7,6 +7,7 @@
  * - Hervorhebung der gefundenen Begriffe
  * - Keyboard Navigation (Strg+K für Fokus)
  * - Detaillierte Ergebnisanzeige
+ * - Dark/Light Mode Support
  */
 
 'use client'
@@ -57,7 +58,6 @@ export function Search() {
   // Keyboard Shortcuts und Navigation
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      // Strg+K für Fokus auf Suche
       if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
         event.preventDefault()
         inputRef.current?.focus()
@@ -116,7 +116,7 @@ export function Search() {
 
     return parts.map((part, i) => 
       regex.test(part) ? (
-        <span key={i} className="bg-primary/20 text-primary">{part}</span>
+        <span key={i} className="bg-blue-50 text-blue-800 dark:bg-primary/20 dark:text-primary">{part}</span>
       ) : (
         part
       )
@@ -124,22 +124,19 @@ export function Search() {
   }
 
   return (
-    <div className="relative" ref={searchRef}>
-      <div className="relative">
+    <div className="relative w-full">
+      <div className="relative rounded-lg bg-slate-300/80 dark:bg-slate-800/50 backdrop-blur-md shadow-sm ring-1 ring-slate-400/30 dark:ring-white/10">
         <input
           ref={inputRef}
           type="text"
           value={query}
           onChange={(e) => {
-            setQuery(e.target.value)
+            setQuery(e.target.value);
             setIsOpen(true)
           }}
           onFocus={() => setIsOpen(true)}
           placeholder="Suchen..."
-          className="w-full sm:w-64 px-4 py-2 text-sm bg-slate-800/50 text-slate-200 rounded-full
-                   border border-slate-700/50 focus:border-slate-600 focus:bg-slate-800/80
-                   placeholder-slate-500 transition-all duration-200 focus:w-72
-                   focus:ring-1 focus:ring-slate-600/50 focus:outline-none"
+          className="w-full bg-transparent px-4 py-2 text-sm text-slate-900 dark:text-slate-200 placeholder:text-slate-600 dark:placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 rounded-lg transition-shadow"
         />
         {query && (
           <motion.button
@@ -148,8 +145,8 @@ export function Search() {
               setQuery('')
               setResults([])
             }}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 
-                     hover:text-slate-300 transition-colors duration-200"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 
+                     hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200"
           >
             <span className="sr-only">Suche zurücksetzen</span>
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,11 +159,17 @@ export function Search() {
         <div className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 items-center space-x-1">
           {!query && (
             <>
-              <kbd className="px-1.5 py-0.5 text-xs text-slate-400 bg-slate-800/50 
-                           rounded-md border border-slate-700/50 shadow-sm">Strg</kbd>
-              <span className="text-slate-500">+</span>
-              <kbd className="px-1.5 py-0.5 text-xs text-slate-400 bg-slate-800/50 
-                           rounded-md border border-slate-700/50 shadow-sm">K</kbd>
+              <kbd className="px-1.5 py-0.5 text-xs text-slate-600 dark:text-slate-400 
+                           bg-slate-300/50 dark:bg-slate-800/50 
+                           rounded-md border border-slate-400/50 dark:border-slate-700/50 shadow-sm">
+                Strg
+              </kbd>
+              <span className="text-slate-500 dark:text-slate-500">+</span>
+              <kbd className="px-1.5 py-0.5 text-xs text-slate-600 dark:text-slate-400 
+                           bg-slate-300/50 dark:bg-slate-800/50 
+                           rounded-md border border-slate-400/50 dark:border-slate-700/50 shadow-sm">
+                K
+              </kbd>
             </>
           )}
         </div>
@@ -179,8 +182,7 @@ export function Search() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute mt-2 w-full sm:w-96 bg-slate-800/95 backdrop-blur-lg rounded-lg
-                     shadow-lg border border-slate-700/50 overflow-hidden"
+            className="absolute top-full mt-2 w-full rounded-lg bg-slate-200/95 dark:bg-slate-800/90 backdrop-blur-md shadow-lg ring-1 ring-slate-400/30 dark:ring-white/10"
           >
             <ul className="py-2 max-h-96 overflow-auto">
               {results.map((result, index) => (
@@ -198,15 +200,15 @@ export function Search() {
                     }}
                     className={`w-full text-left px-4 py-3 transition-colors duration-150
                       ${index === selectedIndex
-                        ? 'bg-slate-700/50 text-white'
-                        : 'text-slate-300 hover:bg-slate-700/30'
+                        ? 'bg-slate-200/70 dark:bg-slate-700/50 text-slate-800 dark:text-white'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-700/30'
                       }`}
                   >
                     <div className="text-sm font-medium">
                       {highlightText(result.item.title, query)}
                     </div>
                     {result.item.description && (
-                      <div className="text-xs text-slate-400 mt-1 line-clamp-2">
+                      <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
                         {highlightText(result.item.description, query)}
                       </div>
                     )}
@@ -216,7 +218,9 @@ export function Search() {
                           <span
                             key={tag}
                             className="px-1.5 py-0.5 text-[10px] rounded-full 
-                                     bg-slate-700/50 text-slate-400 border border-slate-600/30"
+                                     bg-slate-200/70 dark:bg-slate-700/50 
+                                     text-slate-600 dark:text-slate-400 
+                                     border border-slate-300/30 dark:border-slate-600/30"
                           >
                             {tag}
                           </span>

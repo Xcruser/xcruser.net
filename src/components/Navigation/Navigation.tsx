@@ -6,6 +6,7 @@
  * - Interaktive Hover-Effekte
  * - Smooth Transitions
  * - Responsive Design
+ * - Dark/Light Mode Support
  */
 
 'use client'
@@ -14,6 +15,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Search } from '../Search/Search'
+import { ThemeToggle } from '../ThemeToggle'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const navItems = [
@@ -27,7 +29,6 @@ export function Navigation() {
   const [hoveredPath, setHoveredPath] = useState<string | null>(null)
   const pathname = usePathname()
   
-  // Schließe mobile Navigation beim Routenwechsel
   useEffect(() => {
     setIsOpen(false)
   }, [pathname])
@@ -36,35 +37,22 @@ export function Navigation() {
     <motion.nav 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed top-0 w-full z-50"
+      className="fixed top-0 z-50 w-full border-b border-slate-300/50 dark:border-slate-700/50 bg-slate-200/90 dark:bg-slate-900/75 backdrop-blur-md"
     >
       {/* Glasmorphismus Hintergrund */}
-      <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xl border-b border-slate-700/50" />
+      <div className="absolute inset-0 bg-slate-200/90 dark:bg-slate-900/50 backdrop-blur-md border-b border-slate-300/50 dark:border-slate-700/50" />
       
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo und Desktop Navigation */}
-          <div className="flex items-center">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="relative"
+      {/* Navigation Container */}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo und Links */}
+          <div className="flex items-center space-x-8">
+            <Link
+              href="/"
+              className="text-lg font-semibold text-slate-900 dark:text-slate-200 hover:text-slate-700 dark:hover:text-white transition-colors"
             >
-              <Link 
-                href="/" 
-                className="relative text-2xl font-bold flex items-center group"
-              >
-                <span className="bg-gradient-to-r from-blue-200 to-blue-400 bg-clip-text text-transparent">
-                  Xcruser
-                </span>
-                <span className="text-slate-300">.net</span>
-                <motion.div
-                  className="absolute -inset-x-4 -inset-y-2 bg-slate-800/50 rounded-lg blur-sm -z-10 
-                           opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  layoutId="hoverBackground"
-                />
-              </Link>
-            </motion.div>
+              Xcruser.net
+            </Link>
             
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex ml-10 items-center space-x-4">
@@ -79,8 +67,8 @@ export function Navigation() {
                     href={path} 
                     className={`px-3 py-1.5 text-xs font-medium tracking-wide uppercase transition-colors relative
                       ${pathname === path 
-                        ? 'text-slate-200' 
-                        : 'text-slate-400 hover:text-slate-300'
+                        ? 'text-slate-800 dark:text-slate-200' 
+                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-300'
                       }`}
                   >
                     {label}
@@ -100,18 +88,18 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Suche und Mobile Menu Button */}
+          {/* Suche, Theme Toggle und Mobile Menu Button */}
           <div className="flex items-center space-x-4">
             <div className="hidden md:block">
               <Search />
             </div>
-            
+            <ThemeToggle />
             {/* Mobile Menu Button */}
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden relative p-2 rounded-lg text-slate-400 
-                hover:text-white focus:outline-none"
+              className="md:hidden relative p-2 rounded-lg text-slate-500 dark:text-slate-400 
+                hover:text-slate-700 dark:hover:text-white focus:outline-none"
               aria-expanded="false"
             >
               <span className="sr-only">Hauptmenü öffnen</span>
@@ -160,9 +148,9 @@ export function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="relative md:hidden border-t border-slate-700/50"
+            className="relative md:hidden border-t border-slate-300/50 dark:border-slate-700/50"
           >
-            <div className="bg-slate-900/95 backdrop-blur-lg">
+            <div className="bg-slate-100/95 dark:bg-slate-900/95 backdrop-blur-lg">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
                 <div className="flex flex-col space-y-1">
                   {navItems.map(({ path, label }) => (
@@ -177,8 +165,8 @@ export function Navigation() {
                         href={path}
                         className={`block px-4 py-2 text-xs font-medium tracking-wide uppercase transition-all
                           ${pathname === path 
-                            ? 'text-slate-200 bg-white/5' 
-                            : 'text-slate-400 hover:text-slate-300 hover:bg-white/2'
+                            ? 'text-slate-800 dark:text-slate-200 bg-slate-200/50 dark:bg-white/5' 
+                            : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300 hover:bg-slate-200/30 dark:hover:bg-white/2'
                           }`}
                       >
                         {label}

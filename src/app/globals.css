@@ -14,8 +14,16 @@
   --primary: #2563eb;    /* Blau - Hauptfarbe für wichtige Elemente */
   --secondary: #10b981;  /* Smaragdgrün - für Akzente und Hervorhebungen */
   --accent: #8b5cf6;     /* Violett - für besondere Highlights */
-  --background: #0f172a; /* Dunkles Blau - Hintergrundfarbe */
-  --foreground: #f8fafc; /* Helles Grau - Textfarbe */
+}
+
+:root[class~="light"] {
+  --background: #f1f5f9;  /* Helles Blaugrau für Light Mode */
+  --foreground: #334155;  /* Dunkles Slate für Text im Light Mode */
+}
+
+:root[class~="dark"] {
+  --background: #0f172a;  /* Dunkles Blau für Dark Mode */
+  --foreground: #f8fafc;  /* Helles Grau für Text im Dark Mode */
 }
 
 /* 
@@ -24,8 +32,20 @@
  */
 @layer base {
   body {
-    @apply bg-slate-900 text-slate-50 relative overflow-hidden;
+    @apply bg-slate-200 text-slate-900 dark:bg-slate-900 dark:text-slate-50;
   }
+}
+
+/* Spezifische Styles für Light Mode */
+:root[class~="light"] body {
+  background-color: #e2e8f0 !important;
+  color: #1a202c !important;
+}
+
+/* Spezifische Styles für Dark Mode */
+:root[class~="dark"] body {
+  background-color: #0d1117 !important;
+  color: #f8fafc !important;
 }
 
 /* 
@@ -38,9 +58,20 @@
    * Gestaltung der Karten mit Glasmorphismus-Effekt und Hover-Animationen
    */
   .tech-card {
-    @apply relative overflow-hidden rounded-xl bg-slate-800/50 p-6 backdrop-blur-sm
-           border border-slate-700/50 transition-all duration-300
-           hover:border-slate-600/50 hover:shadow-lg hover:shadow-slate-700/20;
+    @apply relative overflow-hidden rounded-xl p-6 backdrop-blur-sm
+           transition-all duration-300 hover:shadow-lg;
+  }
+
+  /* Light Mode Card Styles */
+  :root[class~="light"] .tech-card {
+    @apply bg-white/80 border border-slate-200/50
+           hover:border-slate-300/50 hover:shadow-slate-300/20;
+  }
+
+  /* Dark Mode Card Styles */
+  :root[class~="dark"] .tech-card {
+    @apply bg-slate-800/50 border border-slate-700/50
+           hover:border-slate-600/50 hover:shadow-slate-700/20;
   }
 
   /* 
@@ -79,10 +110,21 @@
   .background-grid {
     @apply absolute inset-0 -z-10;
     background-size: 100px 100px;
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+  }
+
+  /* Light Mode Grid */
+  :root[class~="light"] .background-grid {
+    background-image: 
+      linear-gradient(to right, rgba(51, 65, 85, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(51, 65, 85, 0.05) 1px, transparent 1px);
+  }
+
+  /* Dark Mode Grid */
+  :root[class~="dark"] .background-grid {
     background-image: 
       linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    mask-image: radial-gradient(circle at center, black, transparent 80%);
   }
 
   /* 

@@ -44,10 +44,10 @@ export default function Home() {
        * Hauptüberschrift und Untertitel der Website
        */}
       <div className="max-w-4xl w-full space-y-8 text-center">
-        <h1 className="text-4xl sm:text-6xl font-bold glow-text animate-float">
+        <h1 className="text-4xl sm:text-6xl font-bold text-slate-900 dark:text-white">
           Xcruser.net
         </h1>
-        <p className="text-xl text-slate-300">
+        <p className="text-xl text-slate-700 dark:text-slate-300">
           Willkommen in meinem digitalen Homelab
         </p>
       </div>
@@ -59,30 +59,30 @@ export default function Home() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-16 w-full max-w-6xl">
         {/* Homelab Services Karte */}
         <div className="tech-card group">
-          <h3 className="text-xl font-semibold mb-2 text-primary group-hover:text-white transition-colors">
+          <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-primary group-hover:text-slate-700 dark:group-hover:text-white transition-colors">
             Homelab Services
           </h3>
-          <p className="text-slate-300">
+          <p className="text-slate-700 dark:text-slate-300">
             Entdecken Sie meine selbst gehosteten Dienste und Projekte
           </p>
         </div>
 
         {/* Tech Stack Karte */}
         <div className="tech-card group">
-          <h3 className="text-xl font-semibold mb-2 text-secondary group-hover:text-white transition-colors">
+          <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-secondary group-hover:text-slate-700 dark:group-hover:text-white transition-colors">
             Tech Stack
           </h3>
-          <p className="text-slate-300">
+          <p className="text-slate-700 dark:text-slate-300">
             Moderne Technologien und Tools für optimale Performance
           </p>
         </div>
 
         {/* Projekte Karte */}
         <div className="tech-card group">
-          <h3 className="text-xl font-semibold mb-2 text-accent group-hover:text-white transition-colors">
+          <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-accent group-hover:text-slate-700 dark:group-hover:text-white transition-colors">
             Projekte
           </h3>
-          <p className="text-slate-300">
+          <p className="text-slate-700 dark:text-slate-300">
             Aktuelle Entwicklungen und spannende Experimente
           </p>
         </div>

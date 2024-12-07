@@ -7,8 +7,10 @@ import type { Config } from 'tailwindcss'
  * - Custom Farben für konsistentes Theming
  * - Benutzerdefinierte Animationen
  * - Spezielle Hintergrund-Effekte
+ * - Dark Mode Support (class-basiert)
  */
 const config: Config = {
+  darkMode: 'class',
   // Definiert die Dateien, die nach Tailwind-Klassen durchsucht werden sollen
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',

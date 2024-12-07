@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "title": "Erste Schritte",
+    "path": "/docs\\getting-started",
+    "description": "Eine Einführung in die Verwendung von Xcruser.net",
+    "content": "Willkommen bei Xcruser.net\r \r Diese Dokumentation hilft Ihnen beim Einstieg in die Verwendung von Xcruser.net.\r \r  Features\r \r - Moderne Navigation mit Animationen\r - Intelligente Suche\r - Responsive Design\r - Dark Mode\r - und vieles mehr!\r \r  Quick Start\r \r 1. Navigieren Sie zur gewünschten Sektion\r 2. Nutzen Sie die Suche für schnellen Zugriff\r 3. Folgen Sie den Tutorials\r \r  Weitere Informationen\r \r Schauen Sie sich auch unsere anderen Dokumentationsseiten an für detailliertere Informationen zu spezifischen Themen.",
+    "tags": [
+      "tutorial",
+      "einführung",
+      "start"
+    ],
+    "category": "documentation",
+    "date": "2024-01-01"
+  }
+]
