@@ -1,6 +1,6 @@
 # xcruser.net
 
-Personal website built with Next.js and TailwindCSS.
+Webseite für Homelab Services, gebaut mit Next.js und TailwindCSS.
 
 ## Tech Stack
 
