@@ -1,6 +1,5 @@
 /* 
  * Tailwind CSS Imports
- * Diese Zeilen importieren die Basis-Styles, Komponenten und Utilities von Tailwind
  */
 @tailwind base;
 @tailwind components;
@@ -10,42 +9,116 @@
  * Globale Farbvariablen
  * Definition der Hauptfarben für konsistentes Theming durch die gesamte Anwendung
  */
-:root {
-  --primary: #2563eb;    /* Blau - Hauptfarbe für wichtige Elemente */
-  --secondary: #10b981;  /* Smaragdgrün - für Akzente und Hervorhebungen */
-  --accent: #8b5cf6;     /* Violett - für besondere Highlights */
-}
-
-:root[class~="light"] {
-  --background: #f1f5f9;  /* Helles Blaugrau für Light Mode */
-  --foreground: #334155;  /* Dunkles Slate für Text im Light Mode */
-}
-
-:root[class~="dark"] {
-  --background: #0f172a;  /* Dunkles Blau für Dark Mode */
-  --foreground: #f8fafc;  /* Helles Grau für Text im Dark Mode */
-}
-
-/* 
- * Basis-Styles
- * Grundlegende Stilregeln für den Body-Element
- */
 @layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+    /* Zusätzliche Variablen für den Hintergrund */
+    --glow-color: 56, 189, 248;  /* sky-400 */
+    --gradient-start: #f8fafc;   /* slate-50 */
+    --gradient-mid: #e2e8f0;     /* slate-200 */
+    --gradient-end: #f8fafc;     /* slate-50 */
+    --dot-color: 148, 163, 184;  /* slate-400 */
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    /* Zusätzliche Variablen für den Hintergrund */
+    --glow-color: 29, 78, 216;   /* blue-700 */
+    --gradient-start: #0f172a;   /* slate-900 */
+    --gradient-mid: #1e293b;     /* slate-800 */
+    --gradient-end: #0f172a;     /* slate-900 */
+    --dot-color: 71, 85, 105;    /* slate-600 */
+  }
+
   body {
-    @apply bg-slate-200 text-slate-900 dark:bg-slate-900 dark:text-slate-50;
+    min-height: 100vh;
+    position: relative;
+    background: 
+      radial-gradient(
+        circle at center,
+        rgba(var(--dot-color), 0.5) 1.5px,
+        transparent 1.5px
+      ) 0 0 / 32px 32px,
+      linear-gradient(135deg, 
+        var(--gradient-start) 0%, 
+        var(--gradient-mid) 50%, 
+        var(--gradient-end) 100%
+      );
+    background-size: 32px 32px, 100% 100%;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150vh;
+    height: 150vh;
+    background: radial-gradient(
+      circle,
+      rgba(var(--glow-color), 0.03) 0%,
+      rgba(var(--glow-color), 0.01) 35%,
+      transparent 70%
+    );
+    animation: subtleGlow 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
   }
 }
 
-/* Spezifische Styles für Light Mode */
-:root[class~="light"] body {
-  background-color: #e2e8f0 !important;
-  color: #1a202c !important;
-}
-
-/* Spezifische Styles für Dark Mode */
-:root[class~="dark"] body {
-  background-color: #0d1117 !important;
-  color: #f8fafc !important;
+@keyframes subtleGlow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
 }
 
 /* 
@@ -180,9 +253,7 @@
 
   /* Glassmorphism effect */
   .glass-effect {
-    backdrop-filter: blur(12px);
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    @apply backdrop-blur-sm bg-white/80 dark:bg-slate-900/80;
   }
 
   /* Hover effect for cards */
@@ -292,4 +363,20 @@
 
 .bg-size-200 {
   background-size: 200% auto;
+}
+
+/* Verhindere Layout-Shifts */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Stelle sicher, dass der Body immer die volle Breite einnimmt */
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Verhindere horizontales Scrollen */
+#__next {
+  overflow-x: hidden;
 }

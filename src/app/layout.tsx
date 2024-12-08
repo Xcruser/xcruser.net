@@ -5,6 +5,8 @@ import { Navigation } from "@/components/Navigation/Navigation";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { clsx } from "clsx";
 import { Providers } from '@/components/Providers'
+import { Toaster } from 'react-hot-toast'
+import { Footer } from '@/components/Footer/Footer'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,7 +21,7 @@ const geistMono = localFont({
 });
 
 const metadata: Metadata = {
-  title: "Xcruser.net - Homelab & Projekte",
+  title: "Xcruser - Homelab & Projekte",
   description: "Ein digitales Homelab mit verschiedenen Diensten und Projekten",
 };
 
@@ -32,7 +34,7 @@ export default function RootLayout({
     <html lang="de" suppressHydrationWarning>
       <body
         className={clsx(
-          "min-h-screen font-sans antialiased",
+          "min-h-screen font-sans antialiased overflow-x-hidden",
           geistSans.variable,
           geistMono.variable
         )}
@@ -43,14 +45,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col">
-            <Providers>
+          <Providers>
+            <div className="min-h-screen flex flex-col">
               <Navigation />
-              <main className="flex-1 pt-16">
+              <main className="flex-1">
                 {children}
               </main>
-            </Providers>
-          </div>
+              <Footer />
+            </div>
+            <Toaster />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

@@ -1,4 +1,4 @@
-# XCRUser.net
+# Xcruser
 
 Eine moderne Webplattform für Dokumentation, Projekte und Wissensverwaltung, entwickelt mit Next.js 14, TypeScript und Tailwind CSS.
 
@@ -42,8 +42,8 @@ Eine moderne Webplattform für Dokumentation, Projekte und Wissensverwaltung, en
 
 1. **Repository klonen**
    ```bash
-   git clone https://github.com/yourusername/xcruser.net.git
-   cd xcruser.net
+   git clone https://github.com/yourusername/xcruser.git
+   cd xcruser
    ```
 
 2. **Abhängigkeiten installieren**

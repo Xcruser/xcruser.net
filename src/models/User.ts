@@ -1,6 +1,8 @@
 import mongoose, { Model, Schema, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
 
+export type UserRole = 'admin' | 'documentation' | 'user'
+
 export interface IUser {
   username: string
   firstName: string
@@ -16,12 +18,15 @@ export interface IUser {
     instagram?: string
   }
   password: string
+  roles: UserRole[]
   createdAt: Date
   updatedAt: Date
 }
 
 interface IUserMethods {
   comparePassword(candidatePassword: string): Promise<boolean>;
+  hasRole(role: UserRole): boolean;
+  hasAnyRole(roles: UserRole[]): boolean;
 }
 
 type UserModel = Model<IUser, {}, IUserMethods>;
@@ -55,7 +60,7 @@ const UserSchema = new mongoose.Schema<IUser, UserModel>({
     type: String,
     trim: true,
     match: [
-      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\w .-]*)*\/?$/,
       'Bitte geben Sie eine gültige URL ein',
     ],
   },
@@ -72,6 +77,12 @@ const UserSchema = new mongoose.Schema<IUser, UserModel>({
     required: [true, 'Passwort ist erforderlich'],
     minlength: [8, 'Passwort muss mindestens 8 Zeichen lang sein'],
     select: false // Passwort wird standardmäßig nicht bei Abfragen zurückgegeben
+  },
+  roles: {
+    type: [String],
+    enum: ['admin', 'documentation', 'user'],
+    default: ['user'],
+    required: true,
   },
 }, {
   timestamps: true,
@@ -113,5 +124,14 @@ UserSchema.methods.comparePassword = async function(this: IUser, candidatePasswo
     return false;
   }
 };
+
+// Methode zum Überprüfen von Rollen
+UserSchema.methods.hasRole = function(this: IUser, role: UserRole) {
+  return this.roles.includes(role)
+}
+
+UserSchema.methods.hasAnyRole = function(this: IUser, roles: UserRole[]) {
+  return this.roles.some(role => roles.includes(role))
+}
 
 export default mongoose.models.User || mongoose.model<IUser, UserModel>('User', UserSchema)

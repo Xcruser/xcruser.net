@@ -1,82 +1,109 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/db'
-import User, { IUser } from '@/models/User'
-import bcrypt from 'bcrypt'
+import User, { UserRole } from '@/models/User'
+import { getServerSession } from 'next-auth'
+import { z } from 'zod'
 
-export async function GET() {
+// Schema für die Benutzervalidierung
+const userSchema = z.object({
+  username: z.string().min(3, 'Benutzername muss mindestens 3 Zeichen lang sein'),
+  email: z.string().email('Ungültige E-Mail-Adresse'),
+  password: z.string().min(8, 'Passwort muss mindestens 8 Zeichen lang sein'),
+  firstName: z.string().min(1, 'Vorname ist erforderlich'),
+  lastName: z.string().min(1, 'Nachname ist erforderlich'),
+  roles: z.array(z.enum(['admin', 'documentation', 'user'] as const)).default(['user'])
+})
+
+export async function POST(request: NextRequest) {
   try {
-    await connectDB()
-    const users = await User.find({}, '-password') // Passwort nicht zurückgeben
+    // Überprüfe ob der anfragende Benutzer Admin ist
+    const session = await getServerSession()
+    if (!session?.user?.roles?.includes('admin')) {
+      return NextResponse.json(
+        { error: 'Nur Administratoren können neue Benutzer anlegen' },
+        { status: 403 }
+      )
+    }
 
-    return NextResponse.json(users)
+    await connectDB()
+    const data = await request.json()
+
+    // Validiere die Eingabedaten
+    const validationResult = userSchema.safeParse(data)
+    if (!validationResult.success) {
+      console.log('Validierungsfehler:', validationResult.error)
+      return NextResponse.json(
+        { error: 'Validierungsfehler', details: validationResult.error.errors },
+        { status: 400 }
+      )
+    }
+
+    const { username, email, password, firstName, lastName, roles } = validationResult.data
+
+    // Überprüfe ob Benutzer bereits existiert
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }]
+    })
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'Benutzer mit dieser E-Mail oder diesem Benutzernamen existiert bereits' },
+        { status: 400 }
+      )
+    }
+
+    // Erstelle neuen Benutzer
+    const user = await User.create({
+      username,
+      email,
+      password,
+      firstName,
+      lastName,
+      roles
+    })
+
+    // Entferne sensitive Daten vor der Rückgabe
+    const userResponse = {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      roles: user.roles,
+      createdAt: user.createdAt
+    }
+
+    return NextResponse.json(userResponse, { status: 201 })
   } catch (error) {
-    console.error('Error fetching users:', error)
+    console.error('Fehler beim Erstellen des Benutzers:', error)
     return NextResponse.json(
-      { error: 'Fehler beim Laden der Benutzer' },
+      { error: 'Interner Serverfehler' },
       { status: 500 }
     )
   }
 }
 
-export async function POST(request: Request) {
+export async function GET(request: NextRequest) {
   try {
+    // Überprüfe ob der anfragende Benutzer Admin ist
+    const session = await getServerSession()
+    if (!session?.user?.roles?.includes('admin')) {
+      return NextResponse.json(
+        { error: 'Nur Administratoren können Benutzer auflisten' },
+        { status: 403 }
+      )
+    }
+
     await connectDB()
-    const userData = await request.json() as IUser
-    console.log('Neuer Benutzer wird erstellt:', {
-      ...userData,
-      password: userData.password ? '[HIDDEN]' : undefined
-    })
 
-    // Validiere die Pflichtfelder
-    if (!userData.username || !userData.firstName || !userData.lastName || !userData.email) {
-      console.log('Validierungsfehler: Fehlende Pflichtfelder', {
-        username: !!userData.username,
-        firstName: !!userData.firstName,
-        lastName: !!userData.lastName,
-        email: !!userData.email
-      })
-      return NextResponse.json(
-        { error: 'Benutzername, Vor- und Nachname und E-Mail sind erforderlich' },
-        { status: 400 }
-      )
-    }
+    // Hole alle Benutzer, aber ohne Passwörter
+    const users = await User.find({}, '-password')
 
-    // Prüfe, ob Benutzer bereits existiert
-    const existingUser = await User.findOne({
-      $or: [
-        { username: userData.username },
-        { email: userData.email }
-      ]
-    })
-
-    if (existingUser) {
-      console.log('Benutzer existiert bereits:', {
-        username: existingUser.username,
-        email: existingUser.email
-      })
-      return NextResponse.json(
-        { error: 'Benutzername oder E-Mail existiert bereits' },
-        { status: 400 }
-      )
-    }
-
-    // Das Passwort wird automatisch im Pre-save Hook gehasht
-    const user = await User.create(userData)
-    console.log('Benutzer erfolgreich erstellt:', {
-      id: user._id,
-      username: user.username,
-      email: user.email
-    })
-    
-    // Passwort aus der Antwort entfernen
-    const userObject = user.toObject()
-    delete userObject.password
-
-    return NextResponse.json(userObject)
-  } catch (error: any) {
-    console.error('Fehler beim Erstellen des Benutzers:', error)
+    return NextResponse.json(users)
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Benutzer:', error)
     return NextResponse.json(
-      { error: error.message || 'Fehler beim Erstellen des Benutzers' },
+      { error: 'Interner Serverfehler' },
       { status: 500 }
     )
   }

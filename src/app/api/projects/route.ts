@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server'
-import { connectToDatabase } from '@/lib/mongodb'
+import clientPromise from '@/lib/mongodb'
 import Project from '@/models/Project'
 
 export async function GET() {
   try {
-    await connectToDatabase()
-    const projects = await Project.find().sort({ createdAt: -1 })
+    const client = await clientPromise
+    const db = client.db("xcruser")
+    const collection = db.collection('projects')
+    
+    const projects = await collection.find({}).sort({ createdAt: -1 }).toArray()
     return NextResponse.json(projects)
   } catch (error) {
     console.error('Error fetching projects:', error)
