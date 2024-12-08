@@ -4,9 +4,10 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import clientPromise from '@/lib/mongodb'
 import User from '@/models/User'
 import { connectDB } from '@/lib/db'
-import crypto from 'crypto'
+import { authLimiter } from '@/lib/rateLimit'
+import { handleApiError } from '@/lib/errorHandler'
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -20,6 +21,12 @@ const handler = NextAuth({
         }
 
         try {
+          // Rate Limiting prüfen
+          const rateLimitResult = await authLimiter({ ip: '', headers: new Headers() } as any)
+          if (rateLimitResult.isLimited) {
+            throw new Error('Zu viele Anmeldeversuche. Bitte später erneut versuchen.')
+          }
+
           await connectDB()
           const user = await User.findOne({ email: credentials.email }).select('+password')
           
@@ -48,34 +55,33 @@ const handler = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 Tage
+    maxAge: 8 * 60 * 60, // 8 Stunden
+    updateAge: 4 * 60 * 60 // 4 Stunden
+  },
+  adapter: MongoDBAdapter(clientPromise),
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/login'
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id
-        token.email = user.email
-        token.name = user.name
-        token.username = user.username
         token.roles = user.roles
+        token.username = user.username
       }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string
-        session.user.email = token.email as string
-        session.user.name = token.name as string
-        session.user.username = token.username as string
-        session.user.roles = token.roles as string[]
+        (session.user as any).roles = token.roles
+        (session.user as any).username = token.username
       }
       return session
     }
   },
-  pages: {
-    signIn: '/auth/login',
-    error: '/auth/login'
-  }
-})
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development'
+}
 
+const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
